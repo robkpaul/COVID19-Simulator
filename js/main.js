@@ -55,7 +55,6 @@ class person {
             let coords = this.generateInfectCoords();
             let infectX = coords[0];
             let infectY = coords[1];
-            console.log(`Infecting ${coords}`);
             if(map[infectX][infectY].state == 0){
               map[infectX][infectY].setState(1);
             }
