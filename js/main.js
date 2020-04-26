@@ -1,15 +1,16 @@
 
-class simulation {
+class Simulation {
   constructor() {
     this.personMap = [];
     let simContainer = document.querySelector('.simulation-container');
+    simContainer.innerHTML = '';
     for (var i = 0; i < 10; i++) {
       simContainer.innerHTML += `<div class="row row-${i}"></div>`;
       let rowContainer = document.querySelector(`.row-${i}`);
       this.personMap.push([]);
       for (var j = 0; j < 10; j++) {
         rowContainer.innerHTML += `<div class="ppl pos${i}${j}">•</div>`;
-        this.personMap[i].push(new person(i, j));
+        this.personMap[i].push(new Person(i, j));
       }
     }
   }
@@ -18,21 +19,21 @@ class simulation {
     let infectedX = Math.floor(Math.random()*10);
     let infectedY = Math.floor(Math.random()*10);
     this.personMap[infectedX][infectedY].state = 1;
-    document.defaultView.setInterval(this.doDay, 100, this.personMap);
+    intervalID = document.defaultView.setInterval(this.doDay, 125, this.personMap);
   }
 
   doDay(map) {
     day++;
     document.querySelector('.day-counter').innerHTML = `Day ${day}`;
     for (var row of map) {
-      for (var person of row) {
-        person.doDay(map);
+      for (var pers of row) {
+        pers.doDay(map);
       }
     }
   }
 }
 
-class person {
+class Person {
   constructor(posX, posY) {
     this.x = posX;
     this.y = posY;
@@ -69,7 +70,7 @@ class person {
       }
       this.daysSinceStatusChange++;
       if(Math.floor(Math.random()*this.daysSinceStatusChange) > 6 || this.daysSinceStatusChange == 20){
-        if(Math.floor(Math.random()*100) == 0) {
+        if(Math.floor(Math.random()*100) < 4) {
           this.state = 3;
           document.querySelector(`.pos${this.x}${this.y}`).style.color = "gray";
         }
@@ -97,28 +98,43 @@ class person {
       infectedY++;
     }
     if(infectedX == infectedY && infectedX == 0) {
-        if(Math.floor(Math.random()*2) == 1) {
-          if(this.x == 9){
-            infectedX--
-          }
-          else {
-            infectedX++;
-          }
+      if(Math.floor(Math.random()*2) == 1) {
+        if(this.x == 9){
+          infectedX--
         }
         else {
-          if(this.y == 9){
-            infectedY--;
-          }
-          else {
-            infectedY++;
-          }
+          infectedX++;
         }
+      }
+      else {
+        if(this.y == 9){
+          infectedY--;
+        }
+        else {
+          infectedY++;
+        }
+      }
     }
     return [infectedX+this.x, infectedY+this.y]
   }
 }
 
 let day = 0;
-let r0 = 2.2;
-let sim = new simulation();
-sim.startSim();
+let r0 = document.querySelector('.r0-input').value;
+let intervalID = null;
+let stateOfButton = 'start'
+
+document.querySelector('.start-button').addEventListener('click', () => {
+  if(stateOfButton === 'start') {
+    day = 0;
+    r0 = document.querySelector('.r0-input').value;
+    new Simulation().startSim();
+    stateOfButton = 'stop'
+    document.querySelector('.start-button').innerHTML = 'Stop';
+  }
+  else {
+    document.defaultView.clearInterval(intervalID);
+    stateOfButton = 'start'
+    document.querySelector('.start-button').innerHTML = 'Restart';
+  }
+});
