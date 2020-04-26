@@ -82,8 +82,8 @@ class person {
   }
 
   generateInfectCoords(){
-    let infectedX = Math.floor(Math.random()*2) == 1 ? 1 : -1;
-    let infectedY = Math.floor(Math.random()*2) == 1 ? 1 : -1;
+    let infectedX = Math.floor(Math.random()*3)-1;
+    let infectedY = Math.floor(Math.random()*3)-1;
     if(infectedX + this.x > 9){
       infectedX--
     }
@@ -119,6 +119,6 @@ class person {
 }
 
 let day = 0;
-let r0 = 1.5;
+let r0 = 2.2;
 let sim = new simulation();
 sim.startSim();
