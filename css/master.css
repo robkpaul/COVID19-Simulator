@@ -49,3 +49,15 @@ body {
   justify-content: center;
   margin-top: 10px;
 }
+
+.r0-input-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+}
+
+.r0-input {
+  width: 100px;
+}
