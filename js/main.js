@@ -119,6 +119,6 @@ class person {
 }
 
 let day = 0;
-let r0 = 10;
+let r0 = 1.5;
 let sim = new simulation();
 sim.startSim();
